@@ -1,3 +1,7 @@
+import controller.UserController;
+import controller.UserControllerImpl;
+import dao.UserDao;
+import dao.impl.UserDaoImpl;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
@@ -11,6 +15,8 @@ import org.eclipse.jetty.util.resource.Resource;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
+import service.UserService;
+import service.UserServiceImpl;
 
 import javax.servlet.DispatcherType;
 import javax.servlet.ServletException;
@@ -38,7 +44,7 @@ public class Main {
         }
     }
 
-    public static HandlerList getHandlersConfig() {
+    private static HandlerList getHandlersConfig() {
         ServletContextHandler servletsHandler = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
         servletsHandler.setContextPath("/");
         servletsHandler.addServlet(new ServletHolder(new ServletContainer(getResourceConfig())), "/rest/*");
@@ -57,21 +63,35 @@ public class Main {
         return handlers;
     }
 
-    private static ResourceHandler getResourceHandler(){
-        return new ResourceHandler(){
+    private static ResourceHandler getResourceHandler() {
+        return new ResourceHandler() {
             @Override
             public void handle(String target, Request baseRequest, HttpServletRequest request,
                                HttpServletResponse response) throws IOException, ServletException {
-                if(target.equals("/user.html")
+//                if (target.equals("/user.html")
+//                        || target.equals("/achievements.html")
+//                        || target.equals("/gameplay.html")) {
+//                    Boolean flag = true;
+//
+//                    if (flag) {
+//                        //response.sendRedirect("/login.html");
+//                    }
+//                }
+//                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, "iiiii");
+                if(target.equals("/rooms.html")
                         || target.equals("/achievements.html")
                         || target.equals("/gameplay.html")) {
-                    Boolean flag = true;
-
+                    boolean flag = true;
+                    for (Cookie cookie : request.getCookies()) {
+                        if ("token".equals(cookie.getName())) {
+                            flag = cookie.getValue() == null || cookie.getValue().equals("");
+                            break;
+                        }
+                    }
                     if (flag) {
-                        //response.sendRedirect("/login.html");
+                        response.sendRedirect("/login.html");
                     }
                 }
-                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, "iiiii");
                 super.handle(target, baseRequest, request, response);
             }
         };
@@ -80,13 +100,12 @@ public class Main {
     private static ResourceConfig getResourceConfig() {
         Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, "lllllll");
         return new ResourceConfig() {{
-            packages("game");
             register(new AbstractBinder() {
                 @Override
-                protected void configure () {
-//                    bindAsContract(RoomDaoImpl.class).to(RoomDao.class);
-//                    bindAsContract(RoomServiceImpl.class).to(RoomService.class);
-//                    bindAsContract(RoomControllerImpl.class).to(RoomController.class);
+                protected void configure() {
+                    bindAsContract(UserDaoImpl.class).to(UserDao.class);
+                    bindAsContract(UserServiceImpl.class).to(UserService.class);
+                    bindAsContract(UserControllerImpl.class).to(UserController.class);
                 }
             });
         }};

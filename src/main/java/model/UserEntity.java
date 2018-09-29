@@ -71,7 +71,7 @@ public class UserEntity {
 
     @Override
     public String toString() {
-        return "UserDto{" +
+        return "UserEntity{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +

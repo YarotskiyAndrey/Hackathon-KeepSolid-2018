@@ -8,7 +8,10 @@
         "work": "Word",
         "level": 10
       }
-    ]
+    ],
+    "onWork": true,
+    "taskID": 1,
+    "taskStartTime": "31-Dec-1998 23:37:50"
   },
   {
     "id": 2,
@@ -23,6 +26,9 @@
         "work": "PowerPoint",
         "level": 10
       }
-    ]
+    ],
+    "onWork": false,
+    "taskID": null,
+    "taskStartTime": null
   }
 ]
