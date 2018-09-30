@@ -7,16 +7,23 @@ import service.UserServiceImpl;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import java.util.List;
 
 @Path("/user")
-public class UserControllerImpl implements UserController {
-    @Inject
-    public UserService userService;
+public class UserControllerImpl {
+//    @Inject
+//    public UserService userService;
+//
+//    //@GET
+//    //@Path("list")
+//    public String getAllUserList() {
+//        return "Start";
+//    }
 
     @GET
-    @Path("list")
-    public List<UserDto> getAllUserList() {
-        return userService.getAllUserList();
+    @Path("test")
+    public String getTest() {
+        return "42";
     }
 }

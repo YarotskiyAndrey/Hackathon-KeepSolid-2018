@@ -5,5 +5,5 @@ import dto.UserDto;
 import java.util.List;
 
 public interface UserController {
-    List<UserDto> getAllUserList();
+    String getAllUserList();
 }
